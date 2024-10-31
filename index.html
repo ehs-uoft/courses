@@ -1,0 +1,28 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Course Data</title>
+</head>
+<body>
+    <div id="courseData"></div>
+
+    <script>
+        const token = '11834~h8Gh3HUTCa4VQuYZh6QefFfw4uxyCTGc3h62LaN7Y46LvVGcT3Yvu2LrMcyAaPx4';
+        const baseUrl = 'https://q.utoronto.ca/api/v1/';
+
+        fetch(`${baseUrl}courses`, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Accept': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('courseData').innerHTML = 
+                `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+        })
+        .catch(error => console.error('Error:', error));
+    </script>
+</body>
+</html>
