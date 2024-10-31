@@ -1,28 +1,41 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html>
 <head>
     <title>Course Data</title>
 </head>
 <body>
+    <div id="status">Checking API...</div>
     <div id="courseData"></div>
 
     <script>
         const token = '11834~h8Gh3HUTCa4VQuYZh6QefFfw4uxyCTGc3h62LaN7Y46LvVGcT3Yvu2LrMcyAaPx4';
         const baseUrl = 'https://q.utoronto.ca/api/v1/';
+        const corsProxy = 'https://cors-anywhere.herokuapp.com/';
 
-        fetch(`${baseUrl}courses`, {
+        document.getElementById('status').innerHTML = 'Starting fetch...';
+
+        fetch(corsProxy + baseUrl + 'courses', {
             headers: {
                 'Authorization': `Bearer ${token}`,
-                'Accept': 'application/json'
+                'Accept': 'application/json',
+                'Origin': window.location.origin
             }
         })
-        .then(response => response.json())
+        .then(response => {
+            document.getElementById('status').innerHTML = 
+                `Response status: ${response.status}`;
+            return response.json();
+        })
         .then(data => {
+            console.log('Data received:', data);
             document.getElementById('courseData').innerHTML = 
                 `<pre>${JSON.stringify(data, null, 2)}</pre>`;
         })
-        .catch(error => console.error('Error:', error));
+        .catch(error => {
+            console.error('Error:', error);
+            document.getElementById('status').innerHTML = 
+                `Error: ${error.message}`;
+        });
     </script>
 </body>
 </html>
